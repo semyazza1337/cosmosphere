@@ -1,0 +1,13 @@
+services:
+  cosmosphere:
+    build: .
+    restart: unless-stopped
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - NASA_API_KEY=${NASA_API_KEY:-DEMO_KEY}
+      - COSMOSPHERE_MODEL=${COSMOSPHERE_MODEL:-claude-haiku-4-5-20251001}
+    volumes:
+      - cosmosphere_data:/app/data
+
+volumes:
+  cosmosphere_data:
