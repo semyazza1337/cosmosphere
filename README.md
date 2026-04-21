@@ -11,8 +11,8 @@ uv run cosmosphere run
 # plain-language explanations (amateur mode)
 uv run cosmosphere run --mode amateur
 
-# deep-dive a single paper
-uv run cosmosphere explain 2504.12345 --mode amateur
+# deep-dive a single paper (600-800 word explanation)
+uv run cosmosphere explain 2504.12345 --mode amateur --lang pl
 
 # blog post from today's digest
 uv run cosmosphere post --mode amateur --lang pl

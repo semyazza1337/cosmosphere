@@ -22,7 +22,7 @@ def _blog_repo() -> Path:
     return Path(os.environ.get("BLOG_REPO_PATH", DEFAULT_BLOG_REPO)).expanduser()
 
 
-def _run_git(args: list[str], cwd: Path) -> None:
+def _run_git(args: list[str], cwd: Path) -> subprocess.CompletedProcess:
     logger.info("git %s", " ".join(args))
     try:
         result = subprocess.run(
@@ -38,6 +38,7 @@ def _run_git(args: list[str], cwd: Path) -> None:
     if result.returncode != 0:
         detail = (result.stderr or result.stdout or "").strip()
         raise PublishError(f"git {args[0]} exited {result.returncode}: {detail}")
+    return result
 
 
 def publish_to_blog(src: Path, subdir: str, commit_msg: str) -> Path:
@@ -61,13 +62,7 @@ def publish_to_blog(src: Path, subdir: str, commit_msg: str) -> Path:
 
     _run_git(["add", "."], cwd=repo)
 
-    status = subprocess.run(
-        ["git", "status", "--porcelain"],
-        cwd=str(repo),
-        capture_output=True,
-        text=True,
-        timeout=GIT_TIMEOUT,
-    )
+    status = _run_git(["status", "--porcelain"], cwd=repo)
     if not status.stdout.strip():
         logger.info("No changes to commit; skipping push")
         return dest

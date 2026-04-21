@@ -46,8 +46,7 @@ def _setup_logging(verbose: bool) -> None:
     )
 
 
-def _resolve_lang(mode: str, lang: str | None) -> str:
-    """Both modes default to en unless user overrides with --lang."""
+def _resolve_lang(lang: str | None) -> str:
     return lang or "en"
 
 
@@ -55,7 +54,7 @@ def _resolve_lang(mode: str, lang: str | None) -> str:
 
 def cmd_run(args) -> int:
     load_dotenv(ROOT / ".env")
-    lang = _resolve_lang(args.mode, args.lang)
+    lang = _resolve_lang(args.lang)
     threshold = args.threshold
 
     seen = load_seen(SEEN_PATH)
@@ -153,7 +152,7 @@ def cmd_run(args) -> int:
 
 def cmd_explain(args) -> int:
     load_dotenv(ROOT / ".env")
-    lang = _resolve_lang(args.mode, args.lang)
+    lang = _resolve_lang(args.lang)
     try:
         out_path, text = explain_paper(
             args.arxiv_id,
@@ -176,7 +175,7 @@ def cmd_explain(args) -> int:
 
 def cmd_post(args) -> int:
     load_dotenv(ROOT / ".env")
-    lang = _resolve_lang(args.mode, args.lang)
+    lang = _resolve_lang(args.lang)
     target = date.fromisoformat(args.date) if args.date else date.today()
     try:
         out_path = generate_post(
@@ -204,7 +203,7 @@ def cmd_post(args) -> int:
 
 def cmd_weekly(args) -> int:
     load_dotenv(ROOT / ".env")
-    lang = _resolve_lang(args.mode, args.lang)
+    lang = _resolve_lang(args.lang)
     try:
         out_path = generate_weekly(
             provider=args.provider,

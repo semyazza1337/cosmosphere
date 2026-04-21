@@ -58,14 +58,15 @@ def _build_user_message(papers: list[Paper]) -> str:
 
 def _extract_json_array(text: str) -> list[dict]:
     """Parse a JSON array from the LLM reply, tolerating markdown fences."""
-    fence = re.search(r"```(?:json)?\s*(\[.*?\])\s*```", text, re.DOTALL)
+    fence = re.search(r"```(?:json)?\s*(\[.*\])\s*```", text, re.DOTALL)
     payload = fence.group(1) if fence else text
 
     if not payload.strip().startswith("["):
-        m = re.search(r"(\[.*\])", payload, re.DOTALL)
-        if not m:
+        start = payload.find("[")
+        end = payload.rfind("]")
+        if start == -1 or end == -1 or end <= start:
             raise AnalyzeError("No JSON array found in LLM response")
-        payload = m.group(1)
+        payload = payload[start : end + 1]
 
     try:
         data = json.loads(payload)
