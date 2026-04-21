@@ -10,3 +10,11 @@ data/posts/
 data/weekly/
 dist/
 *.egg-info/
+
+# AI tool configs (keep local)
+.claude/
+.cursor/
+.aider*
+CLAUDE.md
+AGENTS.md
+GEMINI.md
