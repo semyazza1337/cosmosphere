@@ -10,7 +10,7 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_BLOG_REPO = "/home/weck/quartz-blog"
+DEFAULT_BLOG_REPO = "/home/weck/src/quartz-blog"
 GIT_TIMEOUT = 60
 
 
